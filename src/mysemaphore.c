@@ -3,10 +3,6 @@
 #include "commonlib.h"
 #include "mythread.h"
 
-_MyThread *currentThread_g;
-MyQueue *readyQueue_g;
-MyQueue *blkQueue_g;
-ucontext_t initContext;
 
 /*
 

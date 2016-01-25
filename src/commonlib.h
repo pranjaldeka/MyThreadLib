@@ -2,10 +2,12 @@
 #include<stdlib.h>
 #include<ucontext.h>
 
+struct MyQueue;
+
 typedef struct _MyThread
 {
 	ucontext_t ucontext;
-	struct _MyThread *children;
+	struct MyQueue *children;
 	struct _MyThread *next;
 }_MyThread;
 
@@ -39,3 +41,8 @@ int isEmpty(MyQueue *);
 int removeFromQueue(MyQueue *, _MyThread *);
 
 MyQueueNode *createNewQueueNode(_MyThread *);
+
+extern _MyThread *currentThread_g;
+extern MyQueue *readyQueue_g;
+extern MyQueue *blkQueue_g;
+extern ucontext_t initContext;
