@@ -7,8 +7,9 @@ struct MyQueue;
 typedef struct _MyThread
 {
 	ucontext_t ucontext;
-	struct MyQueue *children;
-	struct _MyThread *next;
+	struct MyQueue *childQueue;
+	struct _MyThread *parent;
+	struct _MyThread *waitFor;
 }_MyThread;
 
 typedef struct MyQueueNode
@@ -42,7 +43,11 @@ int removeFromQueue(MyQueue *, _MyThread *);
 
 MyQueueNode *createNewQueueNode(_MyThread *);
 
+int isPresentInQueue(MyQueue *, _MyThread *);
+
 extern _MyThread *currentThread_g;
 extern MyQueue *readyQueue_g;
 extern MyQueue *blkQueue_g;
 extern ucontext_t initContext;
+
+#define STACK_SIZE 8192

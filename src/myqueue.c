@@ -19,7 +19,7 @@ void enqueue(MyQueue *myQueue, _MyThread* _myThread) {
     myQueue->size++;
 
 	if (myQueue->rear == NULL) {
-		myQueue->front = myQueue->rear = NULL;
+		myQueue->front = myQueue->rear = newnode;
 		return;
 	}
 
@@ -71,7 +71,7 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 				else {
 					node2->next = node1->next;
 				}
-				free(node1);
+				//free(node1);
 				myQueue->size--;
 				return 1;
 			}
@@ -80,6 +80,19 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 		}
 	}
 
+	return 0;
+}
+
+int isPresentInQueue(MyQueue *myQueue, _MyThread *_myThread) {
+	if (!isEmpty(myQueue)) {
+		MyQueueNode *node1 = myQueue->front;
+		while (node1 != NULL) {
+			if (node1->_myThread == _myThread) {
+				return 1;
+			}
+			node1 = node1->next;
+		}
+	}
 	return 0;
 }
 
