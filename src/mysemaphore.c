@@ -49,9 +49,9 @@ void MySemaphoreWait(MySemaphore sem) {
 // Destroy on a semaphore
 int MySemaphoreDestroy(MySemaphore sem) {
 	_MySemaphore *_mySemaphore = (_MySemaphore *)sem;
-	if (_mySemaphore->val == 0) {
-		free(_mySemaphore->blkQueue);
-		free(_mySemaphore);
+	if (isEmpty(_mySemaphore->blkQueue)) {
+	//	free(_mySemaphore->blkQueue);
+	//	free(_mySemaphore);
 		return 0;
 	}
 	return  -1;
