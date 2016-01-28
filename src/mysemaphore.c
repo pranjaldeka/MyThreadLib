@@ -38,11 +38,11 @@ void MySemaphoreWait(MySemaphore sem) {
 		enqueue(_mySemaphore->blkQueue, currentThread_g);
 		if (!isEmpty(readyQueue_g)) {
 		    currentThread_g = dequeue(readyQueue_g);
+		    swapcontext(&(temp->ucontext), &(currentThread_g->ucontext));
 		}
 		else {
-			currentThread_g->ucontext = initContext;
+			setcontext(&initContext);
 		}
-		swapcontext(&(temp->ucontext), &(currentThread_g->ucontext));
 	}
 }
 

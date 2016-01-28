@@ -45,10 +45,7 @@ _MyThread *dequeue(MyQueue *myQueue) {
 }
 
 int isEmpty(MyQueue *myQueue) {
-	if (myQueue->front == NULL && myQueue->rear == NULL) {
-		return 1;
-	}
-	return 0;
+	return myQueue->size == 0;
 }
 
 int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
@@ -58,8 +55,8 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 
 		while (node1 != NULL) {
 			if (node1->_myThread == _myThread) {
-				if (myQueue->front == myQueue->rear) {
-					initQueue(myQueue);
+				if (myQueue->size == 1) {
+					myQueue->front = myQueue->rear = NULL;
 				}
 				else if (node1 == myQueue->front) {
 					myQueue->front = myQueue->front->next;

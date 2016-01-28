@@ -47,11 +47,11 @@ int MyThreadJoin(MyThread thread) {
 		_MyThread *runningThread = currentThread_g;
 		if (!isEmpty(readyQueue_g)) {
 			currentThread_g = dequeue(readyQueue_g);
+			swapcontext(&(runningThread->ucontext), &(currentThread_g->ucontext));
 		}
 		else {
-			currentThread_g->ucontext = initContext;
+			setcontext(&initContext);
 		}
-		swapcontext(&(runningThread->ucontext), &(currentThread_g->ucontext));
 	}
 	return 0;
 }
@@ -63,11 +63,11 @@ void MyThreadJoinAll(void) {
 		_MyThread *runningThread = currentThread_g;
 		if (!isEmpty(readyQueue_g)) {
 			currentThread_g = dequeue(readyQueue_g);
+			swapcontext(&(runningThread->ucontext), &(currentThread_g->ucontext));
 		}
 		else {
-			currentThread_g->ucontext = initContext;
+			setcontext(&initContext);
 		}
-		swapcontext(&(runningThread->ucontext), &(currentThread_g->ucontext));
 	}
 }
 
