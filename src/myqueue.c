@@ -58,12 +58,12 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 				if (myQueue->size == 1) {
 					myQueue->front = myQueue->rear = NULL;
 				}
-				else if (node1 == myQueue->front) {
-					myQueue->front = myQueue->front->next;
-				}
 				else if (node1 == myQueue->rear) {
 					myQueue->rear = node2;
 					myQueue->rear->next = NULL;
+				}
+				else if (node1 == myQueue->front) {
+					myQueue->front = myQueue->front->next;
 				}
 				else {
 					node2->next = node1->next;

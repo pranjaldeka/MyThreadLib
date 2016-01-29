@@ -50,8 +50,8 @@ void MySemaphoreWait(MySemaphore sem) {
 int MySemaphoreDestroy(MySemaphore sem) {
 	_MySemaphore *_mySemaphore = (_MySemaphore *)sem;
 	if (isEmpty(_mySemaphore->blkQueue)) {
-	//	free(_mySemaphore->blkQueue);
-	//	free(_mySemaphore);
+		free(_mySemaphore->blkQueue);
+		free(_mySemaphore);
 		return 0;
 	}
 	return  -1;

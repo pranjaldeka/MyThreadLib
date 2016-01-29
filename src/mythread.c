@@ -90,7 +90,7 @@ void updateParentOfChildren(){
 void unblockParent() {
 	if (currentThread_g->parent != NULL) {
 		removeFromQueue(currentThread_g->parent->childQueue, currentThread_g);
-		if (!isEmpty(blkQueue_g) && isPresentInQueue(blkQueue_g, currentThread_g->parent)) {
+		if (isPresentInQueue(blkQueue_g, currentThread_g->parent)) {
 			if (currentThread_g->parent->waitFor == currentThread_g || isEmpty(currentThread_g->parent->childQueue)) {
 		    	removeFromQueue(blkQueue_g, currentThread_g->parent);
 			    currentThread_g->parent->waitFor = NULL;
@@ -112,7 +112,7 @@ void MyThreadExit(void) {
 		setcontext(&(currentThread_g->ucontext));
 	}
 	else {
-		setcontext(&(initContext));
+		setcontext(&initContext);
 	}
 }
 
