@@ -50,30 +50,36 @@ int isEmpty(MyQueue *myQueue) {
 
 int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 	if (!isEmpty(myQueue)) {
+
 		MyQueueNode *node1 = myQueue->front;
 		MyQueueNode *node2 = myQueue->front;
 
-		while (node1 != NULL) {
-			if (node1->_myThread == _myThread) {
-				if (myQueue->size == 1) {
-					myQueue->front = myQueue->rear = NULL;
-				}
-				else if (node1 == myQueue->rear) {
-					myQueue->rear = node2;
-					myQueue->rear->next = NULL;
-				}
-				else if (node1 == myQueue->front) {
-					myQueue->front = myQueue->front->next;
-				}
-				else {
-					node2->next = node1->next;
-				}
-				//free(node1);
-				myQueue->size--;
-				return 1;
-			}
+		if (myQueue->size == 1 && node1->_myThread == _myThread) {
+			//free(node1);
+			initQueue(myQueue);
+			return 1;
+		}
+
+		while (node1 != NULL && node1->_myThread != _myThread) {
 			node2 = node1;
 			node1 = node1->next;
+		}
+
+		if (node1 != NULL) {
+			MyQueueNode *temp = node1;
+			if (node1 == myQueue->rear) {
+			    myQueue->rear = node2;
+				myQueue->rear->next = NULL;
+			}
+			else if (node1 == myQueue->front) {
+				myQueue->front = myQueue->front->next;
+			}
+			else {
+				node2->next = node1->next;
+			}
+			myQueue->size--;
+			//free(temp);
+			return 1;
 		}
 	}
 
