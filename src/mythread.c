@@ -12,7 +12,15 @@ _MyThread *initThread;
 // Create a new thread.
 MyThread MyThreadCreate(void(*start_funct)(void *), void *args) {
 	_MyThread *newThread = (_MyThread *)malloc(sizeof(_MyThread));
+	if (newThread == NULL) {
+		printf("Memory allocation error for thread\n");
+		exit(-1);
+	}
 	newThread->childQueue = (MyQueue *)malloc(sizeof(MyQueue));
+	if (newThread->childQueue == NULL) {
+		printf("Memory allocation error for childQueue\n");
+		exit(-1);
+	}
 	newThread->parent = currentThread_g;
 	newThread->waitFor = NULL;
 	getcontext(&(newThread->ucontext));
@@ -38,7 +46,8 @@ void MyThreadYield(void) {
 // Join with a child thread
 int MyThreadJoin(MyThread thread) {
 	_MyThread *child = (_MyThread *)thread;
-	if(child->parent != currentThread_g) {
+
+	if((child == NULL) || child->parent != currentThread_g) {
 		return -1;
 	}
 	else if (isPresentInQueue(currentThread_g->childQueue, child)){
@@ -119,21 +128,35 @@ void MyThreadExit(void) {
 // Create and run the "main" thread
 void MyThreadInit(void(*start_funct)(void *), void *args) {
 	readyQueue_g = (MyQueue *)malloc(sizeof(MyQueue));
+	if (readyQueue_g == NULL) {
+		printf("Memory allocation error for readyQueue_g\n");
+		exit(-1);
+	}
+
 	initQueue(readyQueue_g);
 
 	blkQueue_g = (MyQueue *)malloc(sizeof(MyQueue));
+	if (blkQueue_g == NULL) {
+		printf("Memory allocation error for blkQueue_g\n");
+		exit(-1);
+	}
 	initQueue(blkQueue_g);
 
     currentThread_g = (_MyThread *)malloc(sizeof(_MyThread));
+    if (currentThread_g == NULL) {
+		printf("Memory allocation error for currentThread_g\n");
+		exit(-1);
+	}
     currentThread_g->childQueue = (MyQueue *)malloc(sizeof(MyQueue));
+    if (currentThread_g->childQueue == NULL) {
+		printf("Memory allocation error for currentThread_g->childQueue\n");
+		exit(-1);
+	}
     initQueue(currentThread_g->childQueue);
     currentThread_g->parent = NULL;
     currentThread_g->waitFor = NULL;
 
-    //ucontext_t *ucontext = (ucontext_t *)malloc(sizeof(ucontext_t));
     getcontext(&(currentThread_g->ucontext));
-
-   // currentThread_g->ucontext = *ucontext;
 
     (currentThread_g->ucontext).uc_link = NULL;
     (currentThread_g->ucontext).uc_stack.ss_sp  = (char *)malloc(sizeof(char)*STACK_SIZE);

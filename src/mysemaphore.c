@@ -12,6 +12,10 @@ References : http://www.cs.ucsb.edu/~rich/class/cs170/notes/Semaphores/
 
 MySemaphore MySemaphoreInit(int initialValue) {
 	_MySemaphore *_mySemaphore = (_MySemaphore *)malloc(sizeof(_MySemaphore));
+	if (_mySemaphore == NULL) {
+		printf("Memory allocation error for semaphore\n");
+		exit(-1);
+	}
 	_mySemaphore->val = initialValue;
 	_mySemaphore->blkQueue = (MyQueue *)malloc(sizeof(MyQueue));
 	initQueue(_mySemaphore->blkQueue);
@@ -49,7 +53,7 @@ void MySemaphoreWait(MySemaphore sem) {
 // Destroy on a semaphore
 int MySemaphoreDestroy(MySemaphore sem) {
 	_MySemaphore *_mySemaphore = (_MySemaphore *)sem;
-	if (isEmpty(_mySemaphore->blkQueue)) {
+	if (_mySemaphore != NULL && isEmpty(_mySemaphore->blkQueue)) {
 		free(_mySemaphore->blkQueue);
 		free(_mySemaphore);
 		return 0;
