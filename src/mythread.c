@@ -21,6 +21,7 @@ MyThread MyThreadCreate(void(*start_funct)(void *), void *args) {
 		printf("Memory allocation error for childQueue\n");
 		exit(-1);
 	}
+	initQueue(newThread->childQueue);
 	newThread->parent = currentThread_g;
 	newThread->waitFor = NULL;
 	getcontext(&(newThread->ucontext));
@@ -91,8 +92,10 @@ void updateParentOfChildren(){
      }
      while(node != NULL) {
          _MyThread *_myThread = node->_myThread;
-         _myThread->parent = parent;
-         node = node->next;      
+         if (_myThread != NULL) {
+         	_myThread->parent = parent;
+         }    
+         node = node->next;  
     }
 }
 
@@ -114,8 +117,8 @@ void MyThreadExit(void) {
 	updateParentOfChildren();
 	unblockParent();
 	/*TODO*/
-	//free(currentThread_g->childQueue);
-	//free(currentThread_g);
+	free(currentThread_g->childQueue);
+	free(currentThread_g);
 	currentThread_g = dequeue(readyQueue_g);
 	if (currentThread_g != NULL) {
 		setcontext(&(currentThread_g->ucontext));

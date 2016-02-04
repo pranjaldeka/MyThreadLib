@@ -34,6 +34,7 @@ _MyThread *dequeue(MyQueue *myQueue) {
 
     myQueue->size--;
 
+    MyQueueNode *tempNode = myQueue->front;
 	_MyThread *temp = myQueue->front->_myThread;
 	myQueue->front = myQueue->front->next;
 
@@ -41,6 +42,7 @@ _MyThread *dequeue(MyQueue *myQueue) {
 		myQueue->rear = NULL;
 	}
 
+    free(tempNode);
 	return temp;
 }
 
@@ -55,7 +57,7 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 		MyQueueNode *node2 = myQueue->front;
 
 		if (myQueue->size == 1 && node1->_myThread == _myThread) {
-			//free(node1);
+			free(node1);
 			initQueue(myQueue);
 			return 1;
 		}
@@ -78,7 +80,7 @@ int removeFromQueue(MyQueue *myQueue, _MyThread *_myThread) {
 				node2->next = node1->next;
 			}
 			myQueue->size--;
-			//free(temp);
+			free(temp);
 			return 1;
 		}
 	}
